@@ -378,7 +378,31 @@ clientkeys = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
         end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        {description = "(un)maximize horizontally", group = "client"}),
+    -- Lock screen. Needs the xlockmore package.
+    awful.key({ modkey }, "F12",
+        function ()
+            awful.util.spawn("xlock -dpmsoff 10 -mode star")
+        end ,
+        {description = "lock screen", group = "custom"}),
+    -- Raise volume.
+    awful.key({}, "XF86AudioRaiseVolume",
+        function ()
+            awful.util.spawn("amixer -q sset Master 2dB+")
+        end ,
+        {description = "raise volume", group = "custom"}),
+    -- Lower volume.
+    awful.key({}, "XF86AudioLowerVolume",
+        function ()
+            awful.util.spawn("amixer -q sset Master 2dB-")
+        end ,
+        {description = "lower volume", group = "custom"}),
+    -- Mute volume.
+    awful.key({}, "XF86AudioMute",
+        function ()
+            awful.util.spawn("amixer set Master toggle")
+        end ,
+        {description = "mute volume", group = "custom"})
 )
 
 -- Bind all key numbers to tags.
