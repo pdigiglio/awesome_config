@@ -22,6 +22,48 @@ if awesome.startup_errors then
                      text = awesome.startup_errors })
 end
 
+-- TODO: volume bar.
+
+-- {{{ Easy battery widget.
+local battery = wibox.widget {
+    {
+        min_value    = 0,
+        max_value    = 100,
+        value        = 0,
+        paddings     = 1,
+        border_width = 1,
+        forced_width = 50,
+        border_color = "#0000ff",
+        id           = "mypb",
+        widget       = wibox.widget.progressbar,
+    },
+    {
+        id           = "mytb",
+        text         = "100%",
+        widget       = wibox.widget.textbox,
+    },
+    layout      = wibox.layout.stack,
+    set_battery = function(self, val)
+        self.mytb.text  = tonumber(val) .. " %"
+        self.mypb.value = tonumber(val)
+    end,
+}
+
+gears.timer {
+	timeout   = 10, -- seconds
+	autostart = true,
+	callback = function()
+		awful.spawn.easy_async(
+            { "sh", "-c", "acpi | cut -f2 -d, | cut -f1 -d%" },
+            function(out)
+                battery.battery = out
+            end
+	)
+	end
+}
+-- }}}
+
+
 -- Handle runtime errors after startup
 do
     local in_error = false
@@ -223,6 +265,7 @@ awful.screen.connect_for_each_screen(function(s)
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
+            battery,
             s.mylayoutbox,
         },
     }
