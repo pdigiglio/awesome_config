@@ -38,9 +38,11 @@ local battery = wibox.widget {
         widget       = wibox.widget.progressbar,
     },
     {
-        id           = "mytb",
-        text         = "100%",
-        widget       = wibox.widget.textbox,
+        id     = "mytb",
+        text   = "100%",
+        align  = "center",
+        valign = "center",
+        widget = wibox.widget.textbox,
     },
     layout      = wibox.layout.stack,
     set_battery = function(self, val)
