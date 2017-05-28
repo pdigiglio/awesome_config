@@ -448,7 +448,13 @@ clientkeys = gears.table.join(
         function ()
             awful.util.spawn("amixer set Master toggle")
         end ,
-        {description = "mute volume", group = "custom"})
+        {description = "mute volume", group = "custom"}),
+    -- Screenshot
+    awful.key({}, "Print",
+        function ()
+            awful.util.spawn("scrot -e 'mv $f ~/Pictures/screens/ 2>/dev/null'", false)
+        end ,
+        {description = "take screenshot", group = "custom"})
 )
 
 -- Bind all key numbers to tags.
